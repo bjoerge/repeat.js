@@ -1,11 +1,13 @@
 {
-  "name":"repeat",
-  "version":"0.0.0",
-  "description":["Repeat.js is a javascript library that makes working with repeated actions pure joy by ",
-    "removing the need for setTimeout/setInterval and somewhat error prone timer references"],
-  "homepage":"https://github.com/bjoerge/repeat.js",
-  "author":"Bjørge Næss <bjoerge@gmail.com>",
-  "keywords":[
+  "name": "repeat",
+  "version": "0.0.1",
+  "description": [
+    "Repeat.js is a javascript library that makes working with repeated actions pure joy by ",
+    "removing the need for setTimeout/setInterval and somewhat error prone timer references"
+  ],
+  "homepage": "https://github.com/bjoerge/repeat.js",
+  "author": "Bjørge Næss <bjoerge@gmail.com>",
+  "keywords": [
     "Repetition",
     "Repeat",
     "Timed",
@@ -17,35 +19,35 @@
     "promise",
     "deferred"
   ],
-  "dependencies":{
-    "dfrrd":          "latest"
+  "dependencies": {
+    "dfrrd": "latest"
   },
-  "devDependencies":{
-    "mocha":          "latest",
-    "expect.js":      "latest",
-    "jquery":         "git://github.com/bjoerge/jquery-node.git#v1.8.0",
-    "jsdom":          "latest",
-    "coffee-script":  "latest",
-    "moment":         "latest",
-    "sinon":          "latest",
-    "jshint":         "latest",
-    "node-minify":    "latest"
+  "devDependencies": {
+    "mocha": "latest",
+    "expect.js": "latest",
+    "jquery": "git://github.com/bjoerge/jquery-node.git#v1.8.0",
+    "jsdom": "latest",
+    "coffee-script": "latest",
+    "moment": "latest",
+    "sinon": "latest",
+    "jshint": "latest",
+    "node-minify": "latest"
   },
-  "scripts":{
-    "test":"make test",
-    "test-browser":"./node_modules/.bin/browserify -r expect.js -o tmp/browser.js -e extra/browser.coffee;coffee -o ./tmp -c ./test;open test/browser.html"
+  "scripts": {
+    "test": "make test",
+    "test-browser": "./node_modules/.bin/browserify -r expect.js -o tmp/browser.js -e extra/browser.coffee;coffee -o ./tmp -c ./test;open test/browser.html"
   },
-  "main":"index.js",
-  "repository":{
-    "type":"git",
-    "url":"https://github.com/bjoerge/repeat.js.git"
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bjoerge/repeat.js.git"
   },
-  "bugs":{
-    "url":"https://github.com/bjoerge/repeat.js/issues"
+  "bugs": {
+    "url": "https://github.com/bjoerge/repeat.js/issues"
   },
-  "licenses":[
+  "licenses": [
     {
-      "type":"MIT"
+      "type": "MIT"
     }
   ]
 }
