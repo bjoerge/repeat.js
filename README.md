@@ -21,7 +21,7 @@ Repeat.js is a tiny (< 2kb minified and gzipped) javascript library for timing f
 
 - It is ideal for polling, performing asynchronous updates, doing timed UI updates or executing expensive tasks asynchronously .
 
-- It does not have any dependencies, but plays nicely with jQuery.
+- It can be used standalone or with jQuery.
 
 - It is built on top of a Deferred/promise implemetation for even greater flexibility
 
