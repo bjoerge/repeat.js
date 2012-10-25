@@ -12,6 +12,8 @@
 Timed actions in JavaScript simplified
 </pre>
 
+[![Build Status](https://secure.travis-ci.org/bjoerge/repeat.js.png)](http://travis-ci.org/bjoerge/repeat.js)
+
 # Summary
 Repeat.js is a tiny (< 2kb minified and gzipped) javascript library for timing function calls.
 
