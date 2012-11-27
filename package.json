@@ -1,6 +1,6 @@
 {
   "name": "repeat",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Repeat.js is a javascript library that makes working with repeated actions pure joy by removing the need for setTimeout/setInterval and somewhat error prone timer references",
   "homepage": "https://github.com/bjoerge/repeat.js",
   "author": "Bjørge Næss <bjoerge@gmail.com>",
