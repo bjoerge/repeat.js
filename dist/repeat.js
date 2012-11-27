@@ -99,7 +99,8 @@
       times:-1,
       for_:-1,
       until:null,
-      if_:null
+      if_:null,
+      paused: false
     };
 
     self.task = chained(self, function (task) {
@@ -148,7 +149,7 @@
               timer = setTimeout(tick, opts.every);
             }
           },
-          skip = isFunction(opts.if_) && !opts.if_();
+          skip = opts.paused === true || (isFunction(opts.if_) && !opts.if_());
 
       if (completed) {
         return;
@@ -192,6 +193,14 @@
         }
       }
     });
+
+    self.pause = function() {
+      opts.paused = true;
+    };
+
+    self.resume = function() {
+      opts.paused = false;
+    };
 
     self.start = function () {
 
@@ -266,10 +275,12 @@
     return self;
   }
 
-  Repeat.defer = global.jQuery ?
-      function() { return new global.jQuery.Deferred(); } :
-      global.Deferred ?
-          function() { return global.Deferred(); } : null;
+  if (typeof global != 'undefined') {
+    Repeat.defer = global.jQuery ?
+        function() { return new global.jQuery.Deferred(); } :
+        global.Deferred ?
+            function() { return global.Deferred(); } : null;
+  }
 
   // Finally, export it as CommonJS module *or* to to the global object as Repeat
   if (typeof exports !== 'undefined') {

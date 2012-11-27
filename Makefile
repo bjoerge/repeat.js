@@ -21,7 +21,7 @@ repeat.js: $(SRC)
 	@node -e "console.log('%sKB %s', (Math.round(require('fs').statSync('$(DST)/$@').size/1024)), '$(DST)/$@')"
 
 repeat.min.js: repeat.js
-	@uglifyjs --no-mangle $(DST)/$< > $(DST)/$@
+	@node_modules/.bin/uglifyjs --no-mangle $(DST)/$< > $(DST)/$@
 	@node -e "console.log('%sKB %s', (Math.round(require('fs').statSync('$(DST)/$@').size/1024)), '$(DST)/$@')"
 
 test-browser:

@@ -26,6 +26,7 @@
     "jsdom": "latest",
     "coffee-script": "latest",
     "moment": "latest",
+    "uglify-js": "latest",
     "sinon": "latest",
     "jshint": "latest",
     "node-minify": "latest"
