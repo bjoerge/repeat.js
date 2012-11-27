@@ -141,13 +141,16 @@
 
     tick = chained(self, function () {
       var result,
+          nextTick = function() {
+            if (~opts.every) {
+              timer = setTimeout(tick, opts.every);
+            }
+          },
           mute = false,
           done = function (result) {
             results.push(result);
             if (!mute) deferred.notify(result);
-            if (~opts.every) {
-              timer = setTimeout(tick, opts.every);
-            }
+            nextTick();
           },
           skip = opts.paused === true || (isFunction(opts.if_) && !opts.if_());
 
@@ -165,6 +168,9 @@
         self.cancel();
       } else if (~opts.times && tickCount === opts.times) {
         self.cancel();
+      }
+      else if (opts.paused === true) {
+        nextTick();
       }
       else {
         var scope = {mute: function() {mute = true;}};
@@ -194,13 +200,13 @@
       }
     });
 
-    self.pause = function() {
+    self.pause = chained(self, function() {
       opts.paused = true;
-    };
+    });
 
-    self.resume = function() {
+    self.resume = chained(self, function() {
       opts.paused = false;
-    };
+    });
 
     self.start = function () {
 
