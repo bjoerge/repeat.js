@@ -31,14 +31,16 @@ Repeat.js is a tiny (< 2kb minified and gzipped) javascript library for timing f
 
 ## Examples
 
+You may also fool around with [ Repeat.js in jsFiddle](http://jsfiddle.net/bjoerge/c7KqT/)
+
 ### Basic example
 ```javascript
 function sayHello() {
   console.log("Hello world!");
 };
 
-Repeat(sayHello).every(500, 'ms').for(2, 'minutes').start.in(5, 'sec');
-// -> Now wait for 5 seconds and keep a watchful eye on the javascript console
+Repeat(sayHello).every(500, 'ms').for(2, 'minutes').start.in(2, 'sec');
+// -> Now wait for 2 seconds and keep a watchful eye on the javascript console
 ```
 
 ### Live display of relative time with jQuery and moment.js
