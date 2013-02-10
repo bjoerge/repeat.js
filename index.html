@@ -1,0 +1,289 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Repeat.js by bjoerge</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Repeat.js</h1>
+        <p>Timed actions in JavaScript simplified</p>
+
+        <p class="view"><a href="https://github.com/bjoerge/repeat.js">View the Project on GitHub <small>bjoerge/repeat.js</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/bjoerge/repeat.js/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/bjoerge/repeat.js/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/bjoerge/repeat.js">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <pre>
+ ____                                     __
+/\  _`\                                  /\ \__       __
+\ \ \L\ \     __   _____      __     __  \ \ ,_\     /\_\    ____
+ \ \ ,  /   /'__`\/\ '__`\  /'__`\ /'__`\ \ \ \/     \/\ \  /',__\
+  \ \ \\ \ /\  __/\ \ \L\ \/\  __//\ \L\.\_\ \ \_  __ \ \ \/\__, `\
+   \ \_\ \_\ \____\\ \ ,__/\ \____\ \__/.\_\\ \__\/\_\_\ \ \/\____/
+    \/_/\/ /\/____/ \ \ \/  \/____/\/__/\/_/ \/__/\/_/\ \_\ \/___/
+                     \ \_\                           \ \____/
+                      \/_/                            \/___/
+
+Timed actions in JavaScript simplified
+</pre>
+
+<p><a href="http://travis-ci.org/bjoerge/repeat.js"><img src="https://secure.travis-ci.org/bjoerge/repeat.js.png" alt="Build Status"></a></p>
+
+<h1>Summary</h1>
+
+<p>Repeat.js is a tiny (&lt; 2kb minified and gzipped) javascript library for timing function calls.</p>
+
+<ul>
+<li><p>It abstracts away the need for dealing with setTimeout and setInterval, and the somewhat error prone timer and interval IDs</p></li>
+<li><p>It provides an simple, intuitive and flexible chained api.</p></li>
+<li><p>It is ideal for polling, performing asynchronous updates, doing timed UI updates or executing expensive tasks asynchronously .</p></li>
+<li><p>It can be used standalone or with jQuery.</p></li>
+<li><p>It is built on top of a Deferred/promise implemetation for even greater flexibility</p></li>
+<li><p>It is tested in IE 7-9, Firefox 10, Chrome 16, Safari 5.1 and Opera 11.61.</p></li>
+</ul><h2>Examples</h2>
+
+<p>You may also fool around with <a href="http://jsfiddle.net/bjoerge/c7KqT/"> Repeat.js in jsFiddle</a></p>
+
+<h3>Basic example</h3>
+
+<div class="highlight"><pre><span class="kd">function</span> <span class="nx">sayHello</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"Hello world!"</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="nx">Repeat</span><span class="p">(</span><span class="nx">sayHello</span><span class="p">).</span><span class="nx">every</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="s1">'ms'</span><span class="p">).</span><span class="k">for</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">'minutes'</span><span class="p">).</span><span class="nx">start</span><span class="p">.</span><span class="k">in</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">'sec'</span><span class="p">);</span>
+<span class="c1">// -&gt; Now wait for 2 seconds and keep a watchful eye on the javascript console</span>
+</pre></div>
+
+<h3>Live display of relative time with jQuery and moment.js</h3>
+
+<div class="highlight"><pre><span class="nx">jQuery</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="p">(</span><span class="kd">function</span> <span class="nx">mockDOM</span><span class="p">()</span> <span class="p">{</span> <span class="c1">// This is just for creating some example DOM elements</span>
+    <span class="kd">var</span> <span class="nx">ul</span> <span class="o">=</span> <span class="nx">jQuery</span><span class="p">(</span><span class="s2">"&lt;ul&gt;&lt;/ul&gt;"</span><span class="p">),</span> <span class="nx">now</span> <span class="o">=</span> <span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">().</span><span class="nx">getTime</span><span class="p">()),</span> <span class="nx">elem_count</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="nx">elem_count</span><span class="o">--</span><span class="p">)</span> <span class="p">{;</span>
+      <span class="nx">ul</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="nx">jQuery</span><span class="p">(</span><span class="s1">'&lt;li class="live-time" data-timestamp="'</span><span class="o">+</span>
+         <span class="p">(</span><span class="nx">now</span><span class="o">+</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span><span class="o">*</span><span class="mi">100000</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mf">0.5</span> <span class="o">?</span> <span class="o">-</span><span class="mi">1</span> <span class="o">:</span> <span class="mi">1</span><span class="p">))</span> <span class="o">+</span>
+        <span class="s1">'"&gt;&lt;/li&gt;'</span><span class="p">))</span>
+    <span class="p">}</span>
+    <span class="nx">ul</span><span class="p">.</span><span class="nx">appendTo</span><span class="p">(</span><span class="nx">jQuery</span><span class="p">(</span><span class="s2">"body"</span><span class="p">));</span> 
+  <span class="p">}());</span>
+
+  <span class="kd">var</span> <span class="nx">elems</span> <span class="o">=</span> <span class="nx">jQuery</span><span class="p">(</span><span class="s2">".live-time"</span><span class="p">);</span>
+  <span class="nx">Repeat</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">elems</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">elem</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">elem</span> <span class="o">=</span> <span class="nx">jQuery</span><span class="p">(</span><span class="nx">elem</span><span class="p">);</span>
+      <span class="kd">var</span> <span class="nx">time</span> <span class="o">=</span> <span class="nx">moment</span><span class="p">(</span><span class="nx">elem</span><span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="s2">"timestamp"</span><span class="p">));</span>
+      <span class="nx">elem</span><span class="p">.</span><span class="nx">html</span><span class="p">(</span><span class="s1">'Displaying '</span><span class="o">+</span> <span class="nx">time</span><span class="p">.</span><span class="nx">format</span><span class="p">(</span><span class="s2">"dddd, MMMM Do YYYY, h:mm:ss a"</span><span class="p">)</span> <span class="o">+</span><span class="s1">' as "&lt;b&gt;'</span><span class="o">+</span> <span class="nx">time</span><span class="p">.</span><span class="nx">fromNow</span><span class="p">()</span><span class="o">+</span><span class="s1">'&lt;/b&gt;"'</span><span class="p">);</span>
+    <span class="p">});</span>
+  <span class="p">}).</span><span class="nx">every</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="s1">'ms'</span><span class="p">).</span><span class="nx">start</span><span class="p">.</span><span class="nx">now</span><span class="p">();</span>
+<span class="p">});</span>
+</pre></div>
+
+<h3>Asynchronous polling with jQuery</h3>
+
+<p>Polling a server every second, but wait for the request to complete before proceeding</p>
+
+<div class="highlight"><pre>
+<span class="nx">Repeat</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+         <span class="nx">jQuery</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+           <span class="nx">url</span><span class="o">:</span> <span class="s1">'http://www.example.com'</span><span class="p">,</span>
+           <span class="nx">success</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);},</span>
+           <span class="nx">complete</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+             <span class="nx">done</span><span class="p">();</span> <span class="c1">// will wait for this to be called before continuing</span>
+           <span class="p">}</span>
+         <span class="p">});</span>
+       <span class="p">})</span>
+       <span class="p">.</span><span class="nx">every</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="s1">'ms'</span><span class="p">)</span>
+       <span class="p">.</span><span class="k">for</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">'minutes'</span><span class="p">)</span>
+       <span class="p">.</span><span class="nx">start</span><span class="p">.</span><span class="k">in</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s1">'secs'</span><span class="p">);</span>
+</pre></div>
+
+<h3>Monitoring changes in an objects' state with console.monitor</h3>
+
+<p>Add a function to the console object, that allows for monitoring a property of any object.</p>
+
+<div class="highlight"><pre><span class="nx">console</span><span class="p">.</span><span class="nx">monitor</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">object</span><span class="p">,</span> <span class="nx">property</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">last_value</span> <span class="o">=</span> <span class="nx">object</span><span class="p">[</span><span class="nx">property</span><span class="p">];</span>
+  <span class="k">return</span> <span class="nx">Repeat</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">current_value</span> <span class="o">=</span> <span class="nx">object</span><span class="p">[</span><span class="nx">property</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">last_value</span> <span class="o">!==</span> <span class="nx">current_value</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Property changed from "'</span><span class="o">+</span><span class="nx">last_value</span><span class="o">+</span><span class="s1">'" to "'</span><span class="o">+</span><span class="nx">current_value</span><span class="o">+</span><span class="s1">'"!'</span><span class="p">);</span>
+      <span class="nx">last_value</span> <span class="o">=</span> <span class="nx">current_value</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="p">{</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"No change"</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">myObject</span> <span class="o">=</span> <span class="p">{</span><span class="nx">someProperty</span><span class="o">:</span> <span class="s2">"Something"</span><span class="p">};</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">monitor</span><span class="p">(</span><span class="nx">myObject</span><span class="p">,</span> <span class="s1">'someProperty'</span><span class="p">).</span><span class="nx">every</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="s1">'ms'</span><span class="p">).</span><span class="k">for</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s1">'seconds'</span><span class="p">).</span><span class="nx">start</span><span class="p">();</span>
+<span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span><span class="nx">myObject</span><span class="p">.</span><span class="nx">someProperty</span> <span class="o">=</span> <span class="s2">"Changed value"</span><span class="p">},</span> <span class="mi">3000</span><span class="p">);</span>
+</pre></div>
+
+<h3>Execute expensive operations asynchronously</h3>
+
+<p>A common trick in order to keep the UI responsive while executing expensive operations
+is to split up the parts of the operation into smaller subtasks that can be executed asynchronously using timers.</p>
+
+<p>The illustrating example from Nicholas C. Zakas' High Performance Javascript (loc. 3215) could be rewritten like this:</p>
+
+<div class="highlight"><pre><span class="kd">function</span> <span class="nx">saveDocument</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">tasks</span> <span class="o">=</span> <span class="p">[</span><span class="nx">openDocument</span><span class="p">,</span> <span class="nx">writeText</span><span class="p">,</span> <span class="nx">closeDocument</span><span class="p">,</span> <span class="nx">updateUI</span><span class="p">];</span> <span class="c1">// these are the expensive functions</span>
+  <span class="k">return</span> <span class="nx">Repeat</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">task</span> <span class="o">=</span> <span class="nx">tasks</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span>
+      <span class="nx">task</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+    <span class="p">})</span>
+    <span class="p">.</span><span class="nx">async</span><span class="p">().</span><span class="nx">until</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">tasks</span><span class="p">.</span><span class="nx">length</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}).</span><span class="nx">start</span><span class="p">.</span><span class="nx">now</span><span class="p">();</span>        
+<span class="p">}</span>
+</pre></div>
+
+<h1>Promise support</h1>
+
+<p>The functions <code>start()</code> <code>now()</code> <code>in()</code> and <code>wait()</code> will all return a read-only <a href="http://en.wikipedia.org/wiki/Futures_and_promises">Promise</a> instance.</p>
+
+<ul>
+<li>If used with jQuery, it will return an instance of jQuery's <a href="http://api.jquery.com/Types/#Promise">Promise</a>.</li>
+<li>If used standalone, a <a href="https://github.com/bjoerge/dfrrd.js">minimalistic</a> implementation of the CommonJS <a href="http://wiki.commonjs.org/wiki/Promises/A">Promises/A</a> spec will be used.</li>
+</ul><p>Basic example:</p>
+
+<div class="highlight"><pre><span class="nx">Repeat</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"W00t"</span><span class="p">);</span> <span class="p">})</span>
+  <span class="p">.</span><span class="nx">every</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">'s'</span><span class="p">)</span>
+  <span class="p">.</span><span class="k">for</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="s1">'s'</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">start</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span>
+  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"I'm done w00t'n"</span><span class="p">);</span>
+  <span class="p">});</span>
+</pre></div>
+
+<h2>Error handling and promise callbacks</h2>
+
+<ul>
+<li>Any errors thrown in the task function will cause the promise to be rejected with the error object as value</li>
+<li>The promise's progress listeners be notified after each task invocation with the returned value as parameter</li>
+<li>When done, the promise will be resolved with an array of the tasks return value for each invocation</li>
+</ul><p>The following example illustrates use of success/progress/error listeners:</p>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">onSuccess</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">results</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"All good"</span><span class="p">,</span> <span class="nx">results</span><span class="p">);</span>
+<span class="p">};</span>
+<span class="kd">var</span> <span class="nx">onFailure</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">exception</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s2">"Error"</span><span class="p">,</span> <span class="nx">exception</span><span class="p">);</span>
+<span class="p">};</span>
+<span class="kd">var</span> <span class="nx">onProgress</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"Progress: "</span><span class="p">,</span> <span class="nx">result</span><span class="p">);</span>
+<span class="p">};</span>
+<span class="nx">Repeat</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">v</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">v</span> <span class="o">&gt;</span> <span class="mf">0.8</span><span class="p">)</span> <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">"Ouch!"</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nx">v</span><span class="p">;</span>
+    <span class="p">})</span>
+  <span class="p">.</span><span class="nx">every</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">'s'</span><span class="p">)</span>
+  <span class="p">.</span><span class="k">for</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s1">'s'</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">start</span><span class="p">()</span>
+  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">onSuccess</span><span class="p">,</span> <span class="nx">onFailure</span><span class="p">,</span> <span class="nx">onProgress</span><span class="p">);</span>
+</pre></div>
+
+<p>If used standalone or with jQuery, the promise object also provides more convenient <code>progress</code> and <code>fail</code> functions for adding callbacks in separate steps.
+Additionaly, there's also an <code>always</code> method to add callback functions for whenever the promise is either resolved or rejected.</p>
+
+<p>The above example using the jQuery or standalone version could be written like this:</p>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">repeat</span> <span class="o">=</span> <span class="nx">Repeat</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">v</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">v</span> <span class="o">&gt;</span> <span class="mf">0.8</span><span class="p">)</span> <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">"Ouch!"</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nx">v</span><span class="p">;</span>
+    <span class="p">})</span>
+  <span class="p">.</span><span class="nx">every</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">'s'</span><span class="p">)</span>
+  <span class="p">.</span><span class="k">for</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">'s'</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+
+<span class="nx">repeat</span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Resolved!'</span><span class="p">);</span> <span class="p">});</span>
+<span class="nx">repeat</span><span class="p">.</span><span class="nx">fail</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Rejected!'</span><span class="p">);</span> <span class="p">});</span>
+<span class="nx">repeat</span><span class="p">.</span><span class="nx">always</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Done! (either resolved or rejected)'</span><span class="p">);</span> <span class="p">});</span>
+</pre></div>
+
+<h2>Compatibility notes</h2>
+
+<ul>
+<li><p>If you are targeting older browsers, you probably want to use any of the ECMAScript 5 polyfill libraries
+listed here: <a href="https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-Browser-Polyfills">https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-Browser-Polyfills</a> (in particular
+<a href="http://code.google.com/p/ddr-ecma5/">ddr-ecma5</a>, <a href="http://augmentjs.com/">augmentjs</a> or
+<a href="https://github.com/kriskowal/es5-shim/">es5-shim</a>)</p></li>
+<li>
+<p>Some older browsers and environments (IE 6 - 8) doesn't support using reserved words
+as property names (and may throw an error when referencing functions like "for", "while" and "in"),
+Repeat.js offers alternative function names for code targeted for such environments:</p>
+
+<ul>
+<li>
+<code>for</code>   =&gt; <code>lasting</code>
+</li>
+<li>
+<code>while</code> =&gt; <code>during</code>
+</li>
+<li>
+<code>in</code>    =&gt; <code>wait</code>
+</li>
+<li>
+<code>if</code>    =&gt; <code>provided</code>
+</li>
+</ul>
+</li>
+</ul><p>Example:</p>
+
+<div class="highlight"><pre><span class="nx">Repeat</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"I'm safe"</span><span class="p">);</span>
+ <span class="p">})</span>
+ <span class="p">.</span><span class="nx">every</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">'sec'</span><span class="p">)</span>
+ <span class="p">.</span><span class="nx">lasting</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">'min'</span><span class="p">)</span>                                   <span class="c1">// lasting instead of for</span>
+ <span class="p">.</span><span class="nx">during</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">&gt;</span> <span class="p">.</span><span class="mi">5</span><span class="p">;</span> <span class="p">})</span>   <span class="c1">// during instead of while</span>
+ <span class="p">.</span><span class="nx">provided</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">&gt;</span> <span class="p">.</span><span class="mi">5</span><span class="p">;</span> <span class="p">})</span> <span class="c1">// provided instead of if</span>
+ <span class="p">.</span><span class="nx">wait</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">'sec'</span><span class="p">);</span>                                     <span class="c1">// wait instead of in</span>
+</pre></div>
+
+<p>Another less readable (and not recommended) workaround would be to reference these methods using bracket notation:</p>
+
+<div class="highlight"><pre><span class="nx">Repeat</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"Hello"</span><span class="p">);</span> <span class="p">})</span>
+<span class="p">.</span><span class="nx">every</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">'s'</span><span class="p">)</span>
+<span class="p">[</span><span class="s1">'for'</span><span class="p">](</span><span class="mi">2</span><span class="p">,</span> <span class="s1">'m'</span><span class="p">)</span>
+<span class="p">[</span><span class="s1">'if'</span><span class="p">](</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">&gt;</span> <span class="p">.</span><span class="mi">5</span><span class="p">;</span> <span class="p">})</span>
+<span class="p">[</span><span class="s1">'while'</span><span class="p">](</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>  <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">&gt;</span> <span class="p">.</span><span class="mi">5</span><span class="p">;</span> <span class="p">})</span>
+<span class="p">[</span><span class="s1">'in'</span><span class="p">](</span><span class="mi">5</span><span class="p">,</span> <span class="s1">'s'</span><span class="p">);</span>
+</pre></div>
+
+<h1>License</h1>
+
+<p>Copyright (C) 2012 Bjørge Næss</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/bjoerge">bjoerge</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
