@@ -1,18 +1,5 @@
-<pre>
- ____                                     __
-/\  _`\                                  /\ \__       __
-\ \ \L\ \     __   _____      __     __  \ \ ,_\     /\_\    ____
- \ \ ,  /   /'__`\/\ '__`\  /'__`\ /'__`\ \ \ \/     \/\ \  /',__\
-  \ \ \\ \ /\  __/\ \ \L\ \/\  __//\ \L\.\_\ \ \_  __ \ \ \/\__, `\
-   \ \_\ \_\ \____\\ \ ,__/\ \____\ \__/.\_\\ \__\/\_\_\ \ \/\____/
-    \/_/\/ /\/____/ \ \ \/  \/____/\/__/\/_/ \/__/\/_/\ \_\ \/___/
-                     \ \_\                           \ \____/
-                      \/_/                            \/___/
-
-Timed actions in JavaScript simplified
-</pre>
-
-[![Build Status](https://secure.travis-ci.org/bjoerge/repeat.js.png)](http://travis-ci.org/bjoerge/repeat.js)
+# No longer maintained
+This project was the result of a few hours work more than 2 years ago. I'm not using it anymore and don't have the time to maintain it. Feel free to fork it, fix it, rewrite it or whatever you want with it.
 
 # Summary
 Repeat.js is a tiny (< 2kb minified and gzipped) javascript library for timing function calls.
