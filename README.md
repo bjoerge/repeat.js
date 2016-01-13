@@ -1,5 +1,4 @@
-# No longer maintained
-This project was the result of a few hours work more than 2 years ago. I'm not using it anymore and don't have the time to maintain it. Feel free to fork it, fix it, rewrite it or whatever you want with it.
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
 
 # Summary
 Repeat.js is a tiny (< 2kb minified and gzipped) javascript library for timing function calls.
